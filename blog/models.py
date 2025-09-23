@@ -4,6 +4,9 @@ from django.contrib.auth import get_user_model
 
 
 class Post(models.Model):
+    """
+    This model stores information about posts
+    """
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     content = models.TextField()
@@ -18,6 +21,9 @@ class Post(models.Model):
 
 
 class Category(models.Model):
+    """
+    This model defines post's categories
+    """
     name = models.CharField(255)
 
     def __str__(self):

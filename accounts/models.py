@@ -11,6 +11,9 @@ class CustomUser(AbstractUser):
 
 
 class Profile(models.Model):
+    """
+    This model is for user's profile
+    """
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     image = models.ImageField(blank=True, null=True)
     bio = models.TextField()
