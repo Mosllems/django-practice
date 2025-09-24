@@ -28,7 +28,7 @@ class CustomUserAdmin(UserAdmin):
 
 
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'get_first_name', 'get_last_name', 'get_email')
+    list_display = ('user', 'get_first_name', 'get_last_name', 'get_email', 'phone_number')
     List_select_related = ('user', )
     list_filter = ('user__username', )
     list_per_page = 10
