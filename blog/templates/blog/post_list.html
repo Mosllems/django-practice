@@ -1,0 +1,10 @@
+{% extends '_base.html' %}
+
+
+
+    {% for post in posts %}
+        {{post.title}}
+
+        {{ post.datetime_created }}
+
+    {% endfor %}
