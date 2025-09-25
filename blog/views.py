@@ -26,7 +26,9 @@ class RedirectClass(RedirectView):
 class PostList(ListView):
     model = Post
     context_object_name = 'posts'
-    
+    paginate_by = 1
+
+
     def get_queryset(self):
         posts = Post.objects.all().order_by('-id')
         return posts
