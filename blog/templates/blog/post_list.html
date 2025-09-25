@@ -10,10 +10,10 @@
 <body>
 
     {% for post in posts %}
-    {{post.title}}
-
-    {{ post.datetime_created }}
-
+    <a href="{% url 'blog:post_detail' post.id %}">{{post.title}}</a>
+    <br>
+    <h4>{{ post.datetime_created }}</h3>
+    <br>
     {% endfor %}
 
     <div class="pagination">
