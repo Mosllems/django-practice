@@ -1,7 +1,10 @@
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, RedirectView, ListView, DetailView
+from django.views.generic import TemplateView, RedirectView, ListView, DetailView, CreateView
 
 from .models import Post
+from .forms import PostForm
+
+
 
 class HomePage(TemplateView):
     template_name = '_base.html'
@@ -35,3 +38,14 @@ class PostList(ListView):
 
 class PostDetail(DetailView):
     model = Post
+
+
+
+class PostCreate(CreateView):
+    model = Post
+    form_class = PostForm
+    success_url = '/blog/'
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
