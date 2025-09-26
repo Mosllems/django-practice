@@ -12,6 +12,10 @@
     {% for post in posts %}
     <a href="{% url 'blog:post_detail' post.id %}">{{post.title}}</a>
     <br>
+    <a href="{% url 'blog:post_edit' post.id %}">
+        <h5>Edit</h5>
+    </a>
+    <br>
     <h4>{{ post.datetime_created }}</h3>
     <br>
     {% endfor %}

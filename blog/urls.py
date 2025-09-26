@@ -11,6 +11,8 @@ urlpatterns = [
     path('blog/', views.PostList.as_view(), name='post_list'),
     path('blog/<int:pk>/', views.PostDetail.as_view(), name='post_detail'),
     path('blog/create/', views.PostCreate.as_view(), name='post_create'),
+    path('blog/<int:pk>/edit/', views.PostUpdate.as_view(), name='post_edit'),
+
 
     # path('go-to-google', views.redirect_class, name='codingyar') this is for fbv
 ] 
