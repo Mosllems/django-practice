@@ -45,7 +45,7 @@ class PostDetail(DetailView):
 class PostCreate(CreateView):
     model = Post
     form_class = PostForm
-    success_url = '/blog/'
+    success_url = reverse_lazy('blog:post_list')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -56,4 +56,10 @@ class PostCreate(CreateView):
 class PostUpdate(UpdateView):
     model = Post
     form_class = PostForm
-    success_url = '/blog/'
+    success_url = reverse_lazy('blog:post_list')
+
+
+
+class PostDelete(DeleteView):
+    model = Post
+    success_url = reverse_lazy('blog:post_list')

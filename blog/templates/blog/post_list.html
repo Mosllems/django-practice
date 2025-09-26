@@ -15,6 +15,9 @@
     <a href="{% url 'blog:post_edit' post.id %}">
         <h5>Edit</h5>
     </a>
+    <a href="{% url 'blog:post_delete' post.id %}">
+        <h5>Delete</h5>
+    </a>
     <br>
     <h4>{{ post.datetime_created }}</h3>
     <br>
