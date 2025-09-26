@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, RedirectView, ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Post
 from .forms import PostForm
@@ -42,7 +43,7 @@ class PostDetail(DetailView):
 
 
 
-class PostCreate(CreateView):
+class PostCreate(LoginRequiredMixin,CreateView):
     model = Post
     form_class = PostForm
     success_url = reverse_lazy('blog:post_list')
@@ -53,13 +54,13 @@ class PostCreate(CreateView):
 
 
 
-class PostUpdate(UpdateView):
+class PostUpdate(LoginRequiredMixin,UpdateView):
     model = Post
     form_class = PostForm
     success_url = reverse_lazy('blog:post_list')
 
 
 
-class PostDelete(DeleteView):
+class PostDelete(LoginRequiredMixin,DeleteView):
     model = Post
     success_url = reverse_lazy('blog:post_list')
