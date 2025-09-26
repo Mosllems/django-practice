@@ -14,7 +14,7 @@ class Profile(models.Model):
     """
     This model is for user's profile
     """
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE,related_name='profile')
     image = models.ImageField(blank=True, null=True)
     bio = models.TextField()
     birth_date = models.DateField(null=True, blank=True)
