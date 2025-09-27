@@ -15,6 +15,6 @@ def post_list(request):
 
 @api_view()
 def post_detail(request,pk):
-    post = get_object_or_404(Post,id=pk)
+    post = get_object_or_404(Post,id=pk,status=True)
     serializer = PostSerializer(post)
     return Response(serializer.data)
