@@ -18,8 +18,13 @@ def post_list(request):
     return Response(serializer.data)
 
 
-@api_view()
+@api_view(['GET','PUT'])
 def post_detail(request,pk):
-    post = get_object_or_404(Post,id=pk,status=True)
-    serializer = PostSerializer(post)
+    post = get_object_or_404(Post.objects.select_related("author","category"),id=pk,status=True)
+    if request.method == 'GET':
+        serializer = PostSerializer(post)
+    elif request.method == 'PUT':
+        serializer = PostSerializer(post,data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
     return Response(serializer.data)
