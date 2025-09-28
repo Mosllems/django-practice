@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework import status
 
 from blog.models import Post
 from .serializers import PostSerializer
@@ -18,7 +19,7 @@ def post_list(request):
     return Response(serializer.data)
 
 
-@api_view(['GET','PUT'])
+@api_view(['GET','PUT','DELETE'])
 def post_detail(request,pk):
     post = get_object_or_404(Post.objects.select_related("author","category"),id=pk,status=True)
     if request.method == 'GET':
@@ -27,4 +28,7 @@ def post_detail(request,pk):
         serializer = PostSerializer(post,data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+    elif request.method == 'DELETE':
+        post.delete()
+        return Response({'detail':'item has been deleted successfuly'},status=status.HTTP_204_NO_CONTENT)
     return Response(serializer.data)
