@@ -6,10 +6,15 @@ from blog.models import Post
 from .serializers import PostSerializer
 
 
-@api_view()
+@api_view(['GET','POST'])
 def post_list(request):
-    posts = Post.objects.filter(status=True)
-    serializer = PostSerializer(posts,many=True)
+    if request.method == 'GET':
+        posts = Post.objects.filter(status=True).select_related("author","category")
+        serializer = PostSerializer(posts,many=True)
+    elif request.method == 'POST':
+        serializer = PostSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
     return Response(serializer.data)
 
 
