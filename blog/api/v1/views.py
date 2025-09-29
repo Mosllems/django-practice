@@ -50,7 +50,7 @@ class PostList(ListCreateAPIView):
 
 
 
-
+# Function based view
 # @api_view(['GET','PUT','DELETE'])
 # @permission_classes([IsAuthenticatedOrReadOnly])
 # def post_detail(request,pk):
@@ -67,24 +67,34 @@ class PostList(ListCreateAPIView):
 #     return Response(serializer.data)
 
 
-class PostDetail(APIView):
-    permission_classes = [IsAuthenticated]
-    serializer_class = PostSerializer
 
-    def get(self,request,pk):
-        post = get_object_or_404(Post.objects.select_related("author","category"),id=pk,status=True)
-        serializer = self.serializer_class(post)
-        return Response(serializer.data)
+# Class based view
+# class PostDetail(APIView):
+#     permission_classes = [IsAuthenticated]
+#     serializer_class = PostSerializer
+
+#     def get(self,request,pk):
+#         post = get_object_or_404(Post.objects.select_related("author","category"),id=pk,status=True)
+#         serializer = self.serializer_class(post)
+#         return Response(serializer.data)
     
-    def put(self,request,pk):
-        post = get_object_or_404(Post.objects.select_related("author","category"),id=pk,status=True)
-        serializer = PostSerializer(post,data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+#     def put(self,request,pk):
+#         post = get_object_or_404(Post.objects.select_related("author","category"),id=pk,status=True)
+#         serializer = PostSerializer(post,data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data)
     
-    def delete(self,request,pk):
-        post = get_object_or_404(Post.objects.select_related("author","category"),id=pk,status=True)
-        post.delete()
-        return Response({'detail':'item has been deleted successfuly'},status=status.HTTP_204_NO_CONTENT)
+#     def delete(self,request,pk):
+#         post = get_object_or_404(Post.objects.select_related("author","category"),id=pk,status=True)
+#         post.delete()
+#         return Response({'detail':'item has been deleted successfuly'},status=status.HTTP_204_NO_CONTENT)
         
+
+class PostDetail(RetrieveUpdateDestroyAPIView):
+    serializer_class = PostSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def get_object(self):
+        pk = self.kwargs.get('pk')
+        return get_object_or_404(Post.objects.select_related("author","category"),id=pk)
