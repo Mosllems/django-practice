@@ -3,22 +3,40 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
 
 from blog.models import Post
 from .serializers import PostSerializer
 
 
-@api_view(['GET','POST'])
-@permission_classes([IsAuthenticatedOrReadOnly])
-def post_list(request):
-    if request.method == 'GET':
+# @api_view(['GET','POST'])
+# @permission_classes([IsAuthenticatedOrReadOnly])
+# def post_list(request):
+#     if request.method == 'GET':
+#         posts = Post.objects.filter(status=True).select_related("author","category")
+#         serializer = PostSerializer(posts,many=True)
+#     elif request.method == 'POST':
+#         serializer = PostSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#     return Response(serializer.data)
+
+class PostList(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PostSerializer
+
+    def get(self,request):
         posts = Post.objects.filter(status=True).select_related("author","category")
         serializer = PostSerializer(posts,many=True)
-    elif request.method == 'POST':
+        return Response(serializer.data)
+
+    def post(self,request):
         serializer = PostSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-    return Response(serializer.data)
+        return Response(serializer.data)
+
+
 
 
 @api_view(['GET','PUT','DELETE'])
