@@ -39,17 +39,40 @@ class PostList(APIView):
 
 
 
-@api_view(['GET','PUT','DELETE'])
-@permission_classes([IsAuthenticatedOrReadOnly])
-def post_detail(request,pk):
-    post = get_object_or_404(Post.objects.select_related("author","category"),id=pk,status=True)
-    if request.method == 'GET':
-        serializer = PostSerializer(post)
-    elif request.method == 'PUT':
+# @api_view(['GET','PUT','DELETE'])
+# @permission_classes([IsAuthenticatedOrReadOnly])
+# def post_detail(request,pk):
+#     post = get_object_or_404(Post.objects.select_related("author","category"),id=pk,status=True)
+#     if request.method == 'GET':
+#         serializer = PostSerializer(post)
+#     elif request.method == 'PUT':
+#         serializer = PostSerializer(post,data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#     elif request.method == 'DELETE':
+#         post.delete()
+#         return Response({'detail':'item has been deleted successfuly'},status=status.HTTP_204_NO_CONTENT)
+#     return Response(serializer.data)
+
+
+class PostDetail(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = PostSerializer
+
+    def get(self,request,pk):
+        post = get_object_or_404(Post.objects.select_related("author","category"),id=pk,status=True)
+        serializer = self.serializer_class(post)
+        return Response(serializer.data)
+    
+    def put(self,request,pk):
+        post = get_object_or_404(Post.objects.select_related("author","category"),id=pk,status=True)
         serializer = PostSerializer(post,data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-    elif request.method == 'DELETE':
+        return Response(serializer.data)
+    
+    def delete(self,request,pk):
+        post = get_object_or_404(Post.objects.select_related("author","category"),id=pk,status=True)
         post.delete()
         return Response({'detail':'item has been deleted successfuly'},status=status.HTTP_204_NO_CONTENT)
-    return Response(serializer.data)
+        
