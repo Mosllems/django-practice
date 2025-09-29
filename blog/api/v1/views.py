@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework import viewsets
 
 from blog.models import Post
 from .serializers import PostSerializer
@@ -42,8 +43,16 @@ from .serializers import PostSerializer
 #         return Response(serializer.data)
 
 
-# Class based view with Generic views
-class PostList(ListCreateAPIView):
+# # Class based view with Generic views
+# class PostList(ListCreateAPIView):
+#     queryset = Post.objects.filter(status=True).select_related("author","category")
+#     serializer_class = PostSerializer
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+
+# Class based view with Modelviewset
+class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.filter(status=True).select_related("author","category")
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
@@ -91,10 +100,11 @@ class PostList(ListCreateAPIView):
 #         return Response({'detail':'item has been deleted successfuly'},status=status.HTTP_204_NO_CONTENT)
         
 
-class PostDetail(RetrieveUpdateDestroyAPIView):
-    serializer_class = PostSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+# no need to have detail view when using modelviewset
+# class PostDetail(RetrieveUpdateDestroyAPIView):
+#     serializer_class = PostSerializer
+#     permission_classes = [IsAuthenticatedOrReadOnly]
 
-    def get_object(self):
-        pk = self.kwargs.get('pk')
-        return get_object_or_404(Post.objects.select_related("author","category"),id=pk)
+#     def get_object(self):
+#         pk = self.kwargs.get('pk')
+#         return get_object_or_404(Post.objects.select_related("author","category"),id=pk)
