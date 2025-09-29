@@ -4,11 +4,14 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 
 from blog.models import Post
 from .serializers import PostSerializer
 
 
+
+# Function based view
 # @api_view(['GET','POST'])
 # @permission_classes([IsAuthenticatedOrReadOnly])
 # def post_list(request):
@@ -21,20 +24,29 @@ from .serializers import PostSerializer
 #         serializer.save()
 #     return Response(serializer.data)
 
-class PostList(APIView):
-    permission_classes = [IsAuthenticated]
+
+# Class based view
+# class PostList(APIView):
+#     permission_classes = [IsAuthenticated]
+#     serializer_class = PostSerializer
+
+#     def get(self,request):
+#         posts = Post.objects.filter(status=True).select_related("author","category")
+#         serializer = PostSerializer(posts,many=True)
+#         return Response(serializer.data)
+
+#     def post(self,request):
+#         serializer = PostSerializer(data=request.data)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response(serializer.data)
+
+
+# Class based view with Generic views
+class PostList(ListCreateAPIView):
+    queryset = Post.objects.filter(status=True).select_related("author","category")
     serializer_class = PostSerializer
-
-    def get(self,request):
-        posts = Post.objects.filter(status=True).select_related("author","category")
-        serializer = PostSerializer(posts,many=True)
-        return Response(serializer.data)
-
-    def post(self,request):
-        serializer = PostSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 
