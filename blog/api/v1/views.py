@@ -6,13 +6,14 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import viewsets
-from rest_framework.filters import SearchFilter
+from rest_framework.filters import SearchFilter, OrderingFilter 
 from django_filters.rest_framework import DjangoFilterBackend
 
 
 from blog.models import Post, Category
 from .serializers import PostSerializer, CategorySerializer
 from .permissions import IsAdminOrReadOnly
+from .paginations import DefaultPagination
 
 
 
@@ -60,9 +61,11 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.filter(status=True).select_related("author","category")
     serializer_class = PostSerializer
     permission_classes = [IsAdminOrReadOnly]
-    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['author', 'title',]
     search_fields = ['title', 'author__username',]
+    ordering_fields = ['datetime_created',]
+    pagination_class = DefaultPagination
 
 
 # Function based view
