@@ -7,8 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import viewsets
 
-from blog.models import Post
-from .serializers import PostSerializer
+from blog.models import Post, Category
+from .serializers import PostSerializer, CategorySerializer
 
 
 
@@ -108,3 +108,11 @@ class PostViewSet(viewsets.ModelViewSet):
 #     def get_object(self):
 #         pk = self.kwargs.get('pk')
 #         return get_object_or_404(Post.objects.select_related("author","category"),id=pk)
+
+
+
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]

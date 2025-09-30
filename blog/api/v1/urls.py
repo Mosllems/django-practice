@@ -9,6 +9,7 @@ router = DefaultRouter()
 
 
 router.register('blog', views.PostViewSet, basename='blog')
+router.register('category', views.CategoryViewSet, basename='category')
 
 
 urlpatterns = router.urls

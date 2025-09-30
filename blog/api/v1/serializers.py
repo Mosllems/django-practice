@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 
-from blog.models import Post
+from blog.models import Post, Category
 
 # class PostSerializer(serializers.Serializer):
 #     id = serializers.IntegerField()
@@ -12,9 +12,17 @@ class UserSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = ['username', 'first_name', 'last_name']
 
+
+
 class PostSerializer(serializers.ModelSerializer):
     # author = UserSerializer()
     class Meta:
         model = Post
         fields = ['id', 'author', 'title', 'content', 'status', 'datetime_created', 'datetime_modified']
 
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ['id', 'name']
