@@ -6,6 +6,9 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import viewsets
+from rest_framework.filters import SearchFilter
+from django_filters.rest_framework import DjangoFilterBackend
+
 
 from blog.models import Post, Category
 from .serializers import PostSerializer, CategorySerializer
@@ -57,7 +60,9 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.filter(status=True).select_related("author","category")
     serializer_class = PostSerializer
     permission_classes = [IsAdminOrReadOnly]
-
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ['author', 'title',]
+    search_fields = ['title', 'author__username',]
 
 
 # Function based view
