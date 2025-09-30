@@ -9,6 +9,7 @@ from rest_framework import viewsets
 
 from blog.models import Post, Category
 from .serializers import PostSerializer, CategorySerializer
+from .permissions import IsAdminOrReadOnly
 
 
 
@@ -55,7 +56,7 @@ from .serializers import PostSerializer, CategorySerializer
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.filter(status=True).select_related("author","category")
     serializer_class = PostSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAdminOrReadOnly]
 
 
 
