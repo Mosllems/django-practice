@@ -4,6 +4,7 @@ from django.conf import settings
 
 from .models import Profile
 
+
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def crete_profile(sender, instance, created, **kwargs):
     if created:

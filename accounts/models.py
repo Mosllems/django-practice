@@ -9,17 +9,19 @@ class CustomUser(AbstractUser):
         return self.username
 
 
-
 class Profile(models.Model):
     """
     This model is for user's profile
     """
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE,related_name='profile')
+
+    user = models.OneToOneField(
+        CustomUser, on_delete=models.CASCADE, related_name="profile"
+    )
     image = models.ImageField(blank=True, null=True)
     bio = models.TextField()
     birth_date = models.DateField(null=True, blank=True)
-    address = models.CharField(max_length=255, default='lorem ipsum')
-    phone_number = models.CharField(max_length=15, default='123456789')
+    address = models.CharField(max_length=255, default="lorem ipsum")
+    phone_number = models.CharField(max_length=15, default="123456789")
     datetime_created = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
 

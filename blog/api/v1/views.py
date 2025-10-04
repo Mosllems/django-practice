@@ -1,12 +1,12 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework import viewsets
-from rest_framework.filters import SearchFilter, OrderingFilter 
+from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -14,7 +14,6 @@ from blog.models import Post, Category
 from .serializers import PostSerializer, CategorySerializer
 from .permissions import IsAdminOrReadOnly
 from .paginations import DefaultPagination
-
 
 
 # Function based view
@@ -55,16 +54,23 @@ from .paginations import DefaultPagination
 #     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
-
 # Class based view with Modelviewset
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.filter(status=True).select_related("author","category")
+    queryset = Post.objects.filter(status=True).select_related("author", "category")
     serializer_class = PostSerializer
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ['author', 'title',]
-    search_fields = ['title', 'author__username',]
-    ordering_fields = ['datetime_created',]
+    filterset_fields = [
+        "author",
+        "title",
+    ]
+    search_fields = [
+        "title",
+        "author__username",
+    ]
+    ordering_fields = [
+        "datetime_created",
+    ]
     pagination_class = DefaultPagination
 
 
@@ -85,7 +91,6 @@ class PostViewSet(viewsets.ModelViewSet):
 #     return Response(serializer.data)
 
 
-
 # Class based view
 # class PostDetail(APIView):
 #     permission_classes = [IsAuthenticated]
@@ -95,19 +100,19 @@ class PostViewSet(viewsets.ModelViewSet):
 #         post = get_object_or_404(Post.objects.select_related("author","category"),id=pk,status=True)
 #         serializer = self.serializer_class(post)
 #         return Response(serializer.data)
-    
+
 #     def put(self,request,pk):
 #         post = get_object_or_404(Post.objects.select_related("author","category"),id=pk,status=True)
 #         serializer = PostSerializer(post,data=request.data)
 #         serializer.is_valid(raise_exception=True)
 #         serializer.save()
 #         return Response(serializer.data)
-    
+
 #     def delete(self,request,pk):
 #         post = get_object_or_404(Post.objects.select_related("author","category"),id=pk,status=True)
 #         post.delete()
 #         return Response({'detail':'item has been deleted successfuly'},status=status.HTTP_204_NO_CONTENT)
-        
+
 
 # no need to have detail view when using modelviewset
 # class PostDetail(RetrieveUpdateDestroyAPIView):
@@ -117,8 +122,6 @@ class PostViewSet(viewsets.ModelViewSet):
 #     def get_object(self):
 #         pk = self.kwargs.get('pk')
 #         return get_object_or_404(Post.objects.select_related("author","category"),id=pk)
-
-
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
