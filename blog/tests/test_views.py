@@ -14,11 +14,11 @@ class TestBlogView(TestCase):
 
     def test_home_successful_view(self):
         response = self.client.get(reverse('blog:home'))
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, template_name="_base.html")
 
     def test_post_create_with_log_in(self):
         self.client.force_login(self.user)
         url = reverse('blog:post_create')
         response = self.client.get(url)
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
